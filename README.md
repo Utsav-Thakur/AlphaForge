@@ -312,6 +312,10 @@ This visual output shows how features like FICO scores and debt-to-income ratios
 
 ![Credit Risk Scorer UI Layout](./screenshots/credit_risk_scorer.png)
 
+When a credit analyst clicks on the **AI Explain** button on any of these charts, AlphaForge displays a real-time glassmorphism card containing AI-generated explainability context for that particular graph or model output:
+
+![AI Explaining Modal in Action](./screenshots/credit_risk_ai_explaining.png)
+
 ### Paragraph 5: Time Series Forecasting: Why Self-Attention Wins
 Traditional sequence models like LSTMs process time series data sequentially, which can make them susceptible to vanishing gradients and memory loss over long lookback windows. In contrast, the self-attention mechanism in the Temporal Fusion Transformer computes attention weights across all time steps simultaneously. This allows the model to capture both short-term momentum and long-term macro patterns, improving forecasting accuracy over multi-day horizons.
 
