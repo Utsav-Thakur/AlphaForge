@@ -1,0 +1,11 @@
+feature,shap_value,feature_value
+int_rate,2.8112097,29.4
+fico_range_low,-1.6227801,783.0
+installment,0.5889559,1547.12
+revol_bal,0.112358205,35495.0
+emp_length_num,-0.10422955,8.0
+annual_inc,-0.07899686,106609.4140533522
+total_acc,-0.06415411,13.0
+mort_acc,-0.063335545,0.0
+dti,0.060967505,5.10457542986364
+grade_encoded,0.046061456,3.0

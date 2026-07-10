@@ -1,0 +1,16 @@
+feature,mean_abs_shap
+int_rate,1.2922392
+fico_range_low,1.0764467
+annual_inc,0.20045194
+revol_util,0.11636292
+installment,0.113533966
+total_acc,0.10443586
+dti,0.09840168
+loan_amnt,0.09264142
+revol_bal,0.090776436
+open_acc,0.076749295
+emp_length_num,0.07382869
+mort_acc,0.05911036
+grade_encoded,0.055064827
+delinq_2yrs,0.02058965
+pub_rec_bankruptcies,0.0049458
