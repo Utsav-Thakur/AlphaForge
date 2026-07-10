@@ -4,9 +4,11 @@
 
 An end-to-end Data Science + AI platform covering explainable credit risk modeling, transformer-based time series forecasting, portfolio optimization, live market intelligence, and a zero-API RAG financial assistant (Forge AI) — built for the standards of JPMorgan, Goldman Sachs, and Thorogood Analytics.
 
+![AlphaForge Platform Dashboard](./screenshots/overview_dashboard.png)
+
 ---
 
-## 3. Problem Statement
+## ## Problem Statement
 
 Financial institutions generate enormous volumes of loan transactions, daily asset ticks, and corporate filings. However, they lack unified intelligence systems capable of processing both quantitative numeric sequences and unstructured financial texts under a single analytical interface. Because of these silos, corporate operations are slowed down by manual analysis, compliance overhead, and legacy statistical frameworks.
 
@@ -22,7 +24,7 @@ AlphaForge addresses these problems by consolidating machine learning classifier
 
 ---
 
-## 4. Goals & Objectives
+## ## Goals & Objectives
 
 1. **Explainable Credit Risk Scoring**
    - Implement an ensemble pipeline utilizing XGBoost to predict the probability of default ($PD \in [0, 1]$) for individual borrowers.
@@ -51,7 +53,7 @@ AlphaForge addresses these problems by consolidating machine learning classifier
 
 ---
 
-## 5. Raw Dataset Overview
+## ## Raw Dataset Overview
 
 Before training or preprocessing, the platform ingests datasets across four distinct financial domains:
 
@@ -128,7 +130,7 @@ Before training or preprocessing, the platform ingests datasets across four dist
 
 ---
 
-## 6. Engineered Feature Set
+## ## Engineered Feature Set
 
 After processing the raw data, the following features are generated for model training:
 
@@ -166,7 +168,7 @@ After processing the raw data, the following features are generated for model tr
 
 ---
 
-## 7. Data Preprocessing & Cleaning Pipeline
+## ## Data Preprocessing & Cleaning Pipeline
 
 The preprocessing pipeline implements nine sequential steps to clean raw data and prepare it for modeling:
 
@@ -179,7 +181,7 @@ cols_to_drop = null_rates[null_rates > null_threshold].index
 df = df.drop(columns=cols_to_drop)
 ```
 - **Justification**: Imputing columns with high missing data rates introduces noise and reduces overall model precision.
-- **Metrics**: Reduced columns from 151 to 35.
+- **Before**: 151 columns | **After**: 35 columns.
 
 ### Step 2: Target Variable Engineering
 The raw `loan_status` column contains multiple categorical strings. These are mapped to a binary target variable representing default risk.
@@ -190,7 +192,7 @@ df = df[df['loan_status'].isin(default_categories + fully_paid_categories)]
 df['is_default'] = df['loan_status'].apply(lambda x: 1 if x in default_categories else 0)
 ```
 - **Justification**: Active loans (such as `Current` or `Late`) have uncertain outcomes. Excluding them ensures the model is trained on completed transactions.
-- **Metrics**: Resulted in 200,000 stratified rows with a 23.1% default rate.
+- **Before**: 2,260,701 unbalanced rows | **After**: 200,000 stratified rows (23.1% default rate).
 
 ### Step 3: Numeric Conversion and Cleaning
 Interest rates and utilization metrics are processed from text formats to numeric values to support mathematical operations.
@@ -199,7 +201,7 @@ df['int_rate'] = df['int_rate'].astype(str).str.rstrip('%').astype(float)
 df['revol_util'] = df['revol_util'].astype(str).str.rstrip('%').astype(float)
 ```
 - **Justification**: Converting text percentages to floats is a prerequisite for numerical modeling.
-- **Metrics**: 100% of interest rate features successfully parsed.
+- **Before**: Text strings (e.g. "12.42%") | **After**: Decimal floats (e.g. 12.42).
 
 ### Step 4: Missing Value Imputation
 Missing data in numeric columns are handled using feature-specific imputation strategies to preserve signal.
@@ -210,7 +212,7 @@ df['pub_rec_bankruptcies'] = df['pub_rec_bankruptcies'].fillna(0.0)
 df['delinq_2yrs'] = df['delinq_2yrs'].fillna(0.0)
 ```
 - **Justification**: Missing mortgage and bankruptcy records generally indicate a count of zero. Median imputation is used for credit utilization to prevent outlier bias.
-- **Metrics**: Null values reduced to 0 across all 35 columns.
+- **Before**: Skewed sets with high null counts | **After**: 100% complete clean columns.
 
 ### Step 5: Handling Outliers
 Extreme values in columns like annual income and DTI are capped to prevent them from skewing model parameters.
@@ -220,7 +222,7 @@ df['annual_inc'] = df['annual_inc'].clip(upper=income_cap)
 df['dti'] = df['dti'].clip(upper=60.0)
 ```
 - **Justification**: Capping features at their 99th percentile minimizes the impact of extreme outliers and potential data entry errors.
-- **Metrics**: Capped annual income at $500,000 and DTI ratios at 60.
+- **Before**: Uncapped ranges (e.g. DTI over 100) | **After**: Normalized caps ($500k income, 60 DTI).
 
 ### Step 6: Log Transformations
 Highly skewed distribution features are log-transformed to stabilize variance and normalize feature spreads.
@@ -229,7 +231,7 @@ df['annual_inc_log'] = np.log1p(df['annual_inc'])
 df['revol_bal_log'] = np.log1p(df['revol_bal'])
 ```
 - **Justification**: Log transformations reduce the impact of extreme values, improving convergence speeds for gradient descent.
-- **Metrics**: Log transform reduced the skewness coefficient of annual income from 8.42 to 0.18.
+- **Before**: Highly skewed raw charts | **After**: Symmetrical log-normal distributions.
 
 ### Step 7: String Parsing and Ordinal Extraction
 Employment duration values are mapped from descriptive text to an ordinal scale.
@@ -247,7 +249,7 @@ def parse_emp_length(val):
 df['emp_length_num'] = df['emp_length'].apply(parse_emp_length)
 ```
 - **Justification**: Converting employment text categories to numbers preserves their natural ordering.
-- **Metrics**: 100% of employment duration records converted to integers in range $[0, 10]$.
+- **Before**: Unstructured strings | **After**: Ordinal values in range $[0, 10]$.
 
 ### Step 8: Categorical One-Hot Encoding
 Categorical columns with no natural ordering are converted to binary indicators to support model operations.
@@ -256,7 +258,7 @@ categorical_cols = ['purpose', 'home_ownership', 'verification_status']
 df = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
 ```
 - **Justification**: One-hot encoding creates binary variables without implying a non-existent rank between categories.
-- **Metrics**: Generated 19 binary columns from 3 original categorical features.
+- **Before**: Raw string columns | **After**: Multiple binary indicator dimensions.
 
 ### Step 9: Train/Test Splitting with Stratification
 The dataset is split into training and test sets using stratification to maintain class balance.
@@ -271,11 +273,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 ```
 - **Justification**: Stratification ensures that the train and test sets have the same default rate (23.1%), preventing distribution bias.
-- **Metrics**: Split 200,000 records into 160,000 training and 40,000 testing samples.
+- **Before**: Raw unaligned records | **After**: Stratified splits (160,000 train, 40,000 test).
 
 ---
 
-## 8. ML Models: Why These? Why Not Others?
+## ## ML Models: Why These? Why Not Others?
 
 ### Table 8: Credit Risk Classification Comparison
 | Model | ROC-AUC | F1-Score | Precision | Recall | Target Advantage | Disadvantage / Verdict |
@@ -302,12 +304,20 @@ where $F_D$ and $F_{ND}$ are the cumulative distributions of credit scores for d
 ### Paragraph 4: Explainability & Compliance via SHAP
 Under regulations like the Equal Credit Opportunity Act (ECOA), financial institutions must provide clear, legally defensible reasons ("reason codes") for credit denials. Black-box models are often rejected by compliance teams because their inner decision logic is opaque. SHAP addresses this constraint by computing Shapley values, which distribute the prediction score across individual input features. This provides mathematical explainability for each credit decision, ensuring regulatory compliance.
 
+Below is the **SHAP Global summary output** from the ML analysis pipeline showing the aggregated impact of features on default predictions:
+
+![SHAP Summary Explainer](./data/processed/credit_risk/shap_summary.png)
+
+This visual output shows how features like FICO scores and debt-to-income ratios affect the model's default predictions:
+
+![Credit Risk Scorer UI Layout](./screenshots/credit_risk_scorer.png)
+
 ### Paragraph 5: Time Series Forecasting: Why Self-Attention Wins
 Traditional sequence models like LSTMs process time series data sequentially, which can make them susceptible to vanishing gradients and memory loss over long lookback windows. In contrast, the self-attention mechanism in the Temporal Fusion Transformer computes attention weights across all time steps simultaneously. This allows the model to capture both short-term momentum and long-term macro patterns, improving forecasting accuracy over multi-day horizons.
 
 ---
 
-## 9. Model Training Details
+## ## Model Training Details
 
 ### Table 9: Final Hyperparameter Configurations
 | Parameter | XGBoost Credit Scorer | LightGBM Classifier | PyTorch Transformer |
@@ -340,7 +350,7 @@ Total Dataset [200,000 Rows]
 
 ---
 
-## 10. Final Model Results & Interpretation
+## ## Final Model Results & Interpretation
 
 ### Table 10: Credit Classifier Evaluation Metrics
 | Metric | Logistic Regression | Random Forest | LightGBM | XGBoost (Production) |
@@ -373,9 +383,13 @@ Setting the decision threshold at `0.5` yields a Precision of **0.7410** and a R
 
 If the bank's priority is to minimize credit losses (e.g., during an economic downturn), risk managers can lower the decision threshold to flag and reject more high-risk loans, which increases Recall but lowers Precision. Conversely, if the priority is to maximize loan volume, they can raise the threshold, accepting more loans at the expense of catching fewer defaults.
 
+Below is the **Temporal Fusion Transformer Forecaster** interface showing stock projections with confidence bounds:
+
+![Temporal Price Forecaster UI](./screenshots/forecaster_page.png)
+
 ---
 
-## 11. Portfolio Optimization: Markowitz & Monte Carlo
+## ## Portfolio Optimization: Markowitz & Monte Carlo
 
 AlphaForge uses Modern Portfolio Theory (MPT) and Monte Carlo simulations to optimize asset allocations:
 
@@ -397,11 +411,17 @@ $$\text{Sharpe Ratio} = \frac{R_p - R_f}{\sigma_p}$$
 | **NIFTY_Blue** | RELIANCE, TCS, HDFC, INFY, ICICI | **1.2145** | **19.2%** | **11.4%** | 40% (Reliance Industries) |
 | **Global_Mix** | AAPL, NVDA, JPM, GS, RELIANCE, TCS | **1.3820** | **23.5%** | **13.2%** | 35% (NVIDIA) |
 
+Below is the **Portfolio Lab** visualization panel illustrating the simulated Efficient Frontier:
+
+![Modern Portfolio Lab UI Layout](./screenshots/portfolio_lab.png)
+
 ---
 
-## 12. Forge AI: Zero-API RAG Architecture
+## ## Forge AI: Zero-API RAG Architecture
 
 Forge AI is the platform's local search assistant, designed to retrieve corporate information from SEC 10-K filings without sending data to external APIs.
+
+![ForgeAI Chat Interface Layout](./screenshots/forge_ai_chatbot.png)
 
 ### Table 13: Local Inference vs. Cloud API
 | Dimension | OpenAI / Anthropic Cloud APIs | Forge AI (Local Inference) |
@@ -427,15 +447,19 @@ $$\mathbf{e}_k = \text{Model}(c_k) \in \mathbb{R}^{384}$$
 7. **Query Processing**: User queries are embedded using the same SentenceTransformer model, and FAISS retrieves the top 5 most similar text chunks based on cosine similarity.
 8. **Response Streaming**: The retrieved chunks are displayed as citations, and the top-matching chunk is streamed character-by-character in the chat interface.
 
+Below is the **SEC Semantic RAG Filings search console** showing verified source text citations:
+
+![SEC Semantic RAG Filings Search](./screenshots/rag_filings_search.png)
+
 ### Why SentenceTransformers & FAISS?
 - **SentenceTransformers**: The `all-MiniLM-L6-v2` model runs locally on CPU with low latency, providing semantic search capabilities without the need for external API calls.
 - **FAISS (Facebook AI Similarity Search)**: Optimized for vector operations, FAISS performs similarity queries in sub-millisecond times, making it suitable for local deployment.
 
 ---
 
-## 13. Business Impact & ROI Analysis
+## ## Business Impact & ROI Analysis
 
-AlphaForge is designed to deliver measurable operational improvements and cost savings for financial institutions:
+AlphaForge is designed to deliver operational improvements and cost savings for financial institutions:
 
 ### Credit Risk Scorer (XGBoost Classifier)
 - **Reduced Credit Losses**: Identifying high-risk defaults prior to loan approval reduces non-performing asset (NPA) ratios.
@@ -456,14 +480,14 @@ AlphaForge is designed to deliver measurable operational improvements and cost s
 ### Table 14: Quantified Financial ROI Estimates
 | Module | Current Process (Manual / Baseline) | AlphaForge System | Annualized Business ROI (Est.) |
 | :--- | :--- | :--- | :--- |
-| **Credit Scorer** | Standard linear scoring (14.2% default rate) | XGBoost Classifier (catches 68% of defaults) | **$22,000,000 saved** in default losses per $140M book |
+| **Credit Scorer** | Standard credit scoring | XGBoost Classifier (catches 68% of defaults) | **$22,000,000 saved** in default losses per $140M book |
 | **Forecaster** | Manual trend analysis / lagging indicators | PyTorch Transformer Forecasts | **+$1,000,000 portfolio alpha** per $100M AUM |
 | **Optimizer** | Equal-weight allocations (Sharpe Ratio ~0.8) | SLSQP Portfolio Optimization (Sharpe ~1.38) | **$40,000 - $80,000 added yield** per $1M invested |
 | **Forge AI** | Manual SEC 10-K document review (~30 hours) | Local RAG Assistant search query (<150ms) | **$12,000 saved** in analyst time per analyst annually |
 
 ---
 
-## 14. Tech Stack & Software Layers
+## ## Tech Stack & Software Layers
 
 ### Table 15: Platform Implementation Dependencies
 | Layer | Technology | Version | Purpose | Why Chosen Over Alternative |
@@ -491,7 +515,7 @@ AlphaForge is designed to deliver measurable operational improvements and cost s
 
 ---
 
-## 15. Project Directory Structure
+## ## Project Directory Structure
 
 ```
 AlphaForge/
@@ -560,7 +584,7 @@ AlphaForge/
 
 ---
 
-## 16. How to Run
+## ## How to Run
 
 Follow these steps to configure and run the AlphaForge platform:
 
@@ -606,7 +630,7 @@ Once the development server is running, open your browser and navigate to:
 
 ---
 
-## 17. Key Findings
+## ## Key Findings
 
 - **Credit Risk Classification**: The XGBoost classifier achieved an ROC-AUC of **0.8614** on the test set, indicating high discriminative power in predicting defaults.
 - **Model Separation**: The Kolmogorov-Smirnov (KS) statistic of **0.47** shows that the model successfully separates defaulters from non-defaulters.
@@ -623,7 +647,7 @@ Once the development server is running, open your browser and navigate to:
 
 ---
 
-## 18. About the Author
+## ## About the Author
 
 **Utsav Kumar Thakur**  
 *MSc in Operational Research, University of Delhi*  
