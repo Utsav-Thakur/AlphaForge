@@ -1,0 +1,6 @@
+data/
+ml_analysis.ipynb
+.git/
+screenshots/
+node_modules/
+dist/

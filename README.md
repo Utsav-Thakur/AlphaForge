@@ -634,6 +634,7 @@ Once the development server is running, open your browser and navigate to:
 
 ### 5. Continuous Deployment to Vercel
 AlphaForge is configured for continuous integration and deployment (CI/CD) to **Vercel** linked directly via Git hooks.
+- **Live Production URL**: [https://alphaforge-rust.vercel.app](https://alphaforge-rust.vercel.app)
 - Click the **Deploy to Vercel** badge at the top of the README, or import the repository at: [Vercel Import Console](https://vercel.com/new/import?s=https://github.com/Utsav-Thakur/AlphaForge)
 - Configure the Vite project presets:
   - **Framework Preset**: `Vite`
