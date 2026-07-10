@@ -1,4 +1,4 @@
-[![Python Version](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python)](https://www.python.org/) [![XGBoost](https://img.shields.io/badge/XGBoost-1.7-red?style=flat-square)](https://xgboost.readthedocs.io/) [![SHAP](https://img.shields.io/badge/SHAP-0.42-blueviolet?style=flat-square)](https://shap.readthedocs.io/) [![LightGBM](https://img.shields.io/badge/LightGBM-3.3-yellowgreen?style=flat-square)](https://lightgbm.readthedocs.io/) [![PyTorch](https://img.shields.io/badge/PyTorch-2.0-orange?style=flat-square&logo=pytorch)](https://pytorch.org/) [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.2-blue?style=flat-square&logo=scikitlearn)](https://scikit-learn.org/) [![FAISS](https://img.shields.io/badge/FAISS-1.7-purple?style=flat-square)](https://github.com/facebookresearch/faiss) [![React](https://img.shields.io/badge/React-18-cyan?style=flat-square&logo=react)](https://react.dev/) [![Recharts](https://img.shields.io/badge/Recharts-2.7-green?style=flat-square)](https://recharts.org/) [![FastAPI](https://img.shields.io/badge/FastAPI-0.95-emerald?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/) [![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](https://opensource.org/licenses/MIT) [![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)](https://github.com/Utsav-Thakur/AlphaForge)
+[![Python Version](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python)](https://www.python.org/) [![XGBoost](https://img.shields.io/badge/XGBoost-1.7-red?style=flat-square)](https://xgboost.readthedocs.io/) [![SHAP](https://img.shields.io/badge/SHAP-0.42-blueviolet?style=flat-square)](https://shap.readthedocs.io/) [![LightGBM](https://img.shields.io/badge/LightGBM-3.3-yellowgreen?style=flat-square)](https://lightgbm.readthedocs.io/) [![PyTorch](https://img.shields.io/badge/PyTorch-2.0-orange?style=flat-square&logo=pytorch)](https://pytorch.org/) [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.2-blue?style=flat-square&logo=scikitlearn)](https://scikit-learn.org/) [![FAISS](https://img.shields.io/badge/FAISS-1.7-purple?style=flat-square)](https://github.com/facebookresearch/faiss) [![React](https://img.shields.io/badge/React-18-cyan?style=flat-square&logo=react)](https://react.dev/) [![Recharts](https://img.shields.io/badge/Recharts-2.7-green?style=flat-square)](https://recharts.org/) [![FastAPI](https://img.shields.io/badge/FastAPI-0.95-emerald?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/) [![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](https://opensource.org/licenses/MIT) [![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)](https://github.com/Utsav-Thakur/AlphaForge) [![LinkedIn](https://img.shields.io/badge/LinkedIn-Utsav%20Kumar%20Thakur-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/utsav-thakur-2b01871b7) [![Deploy to Vercel](https://img.shields.io/badge/Deploy%20to-Vercel-black?style=flat-square&logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FUtsav-Thakur%2FAlphaForge)
 
 # ⚡ AlphaForge — Financial Intelligence Platform
 
@@ -631,6 +631,16 @@ npm run dev
 ### 4. Open the Interface
 Once the development server is running, open your browser and navigate to:  
 ➜ **Local Address**: [http://localhost:5173/](http://localhost:5173/)
+
+### 5. Continuous Deployment to Vercel
+AlphaForge is configured for continuous integration and deployment (CI/CD) to **Vercel** linked directly via Git hooks.
+- Click the **Deploy to Vercel** badge at the top of the README, or import the repository at: [Vercel Import Console](https://vercel.com/new/import?s=https://github.com/Utsav-Thakur/AlphaForge)
+- Configure the Vite project presets:
+  - **Framework Preset**: `Vite`
+  - **Build Command**: `npm run build`
+  - **Output Directory**: `dist`
+  - **Install Command**: `npm install --legacy-peer-deps`
+- Once deployed, add the live production link to your **LinkedIn** profile under the AlphaForge project description to showcase it to recruiters and quant hiring managers.
 
 ---
 
