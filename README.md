@@ -2,6 +2,8 @@
 
 # ⚡ AlphaForge — Financial Intelligence Platform
 
+Live Demo :- https://alphaforge-rust.vercel.app/
+
 An end-to-end Data Science + AI platform covering explainable credit risk modeling, transformer-based time series forecasting, portfolio optimization, live market intelligence, and a zero-API RAG financial assistant (Forge AI) — built for the standards of JPMorgan, Goldman Sachs, and Thorogood Analytics.
 
 ![AlphaForge Platform Dashboard](./screenshots/overview_dashboard.png)
